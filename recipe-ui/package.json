@@ -1,0 +1,73 @@
+{
+  "name": "recipe-planner-ui",
+  "version": "1.6.2",
+  "description": "Framework-agnostic web components for recipe discovery and meal planning UIs.",
+  "license": "MIT",
+  "author": "sahilsoni432",
+  "//": "No \"type\": \"module\" here. Stencil emits a dual build whose CommonJS half uses .js files; declaring the package as ESM would make Node parse those as modules and fail.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahilsoni432/Meal-Planner.git",
+    "directory": "recipe-ui"
+  },
+  "homepage": "https://github.com/sahilsoni432/Meal-Planner/tree/main/recipe-ui#readme",
+  "bugs": {
+    "url": "https://github.com/sahilsoni432/Meal-Planner/issues"
+  },
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/recipe-planner-ui/recipe-planner-ui.esm.js",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./dist/recipe-planner-ui/recipe-planner-ui.css": "./dist/recipe-planner-ui/recipe-planner-ui.css",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json",
+    "./components/*.js": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    },
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    },
+    "./loader": {
+      "types": "./loader/index.d.ts",
+      "import": "./loader/index.js",
+      "require": "./loader/index.cjs.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "sideEffects": [
+    "dist/recipe-planner-ui/**",
+    "loader/**"
+  ],
+  "keywords": [
+    "stencil",
+    "web-components",
+    "custom-elements",
+    "recipe",
+    "meal-planner",
+    "design-system"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "generate": "stencil generate"
+  },
+  "dependencies": {
+    "@stencil/core": "^4.27.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5"
+  }
+}

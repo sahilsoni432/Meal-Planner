@@ -1,0 +1,29 @@
+node_modules/
+
+# Build output
+dist/
+loader/
+www/
+.svelte-kit/
+build/
+.vercel/
+
+# Note: recipe-ui/src/components.d.ts is generated but intentionally committed —
+# it is the type surface the SvelteKit app consumes.
+
+# Legacy runtime store, from before state moved into a cookie
+web/data/store.json
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Local tooling
+.vscode/
+
+# Editor and OS
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
