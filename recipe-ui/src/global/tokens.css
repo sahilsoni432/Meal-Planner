@@ -1,0 +1,387 @@
+/**
+ * Design tokens for recipe-planner-ui.
+ *
+ * Three tiers: primitive (raw values) -> semantic (roles) -> component (per-component hooks).
+ * Components reference semantic and component tiers only, never primitives, so a consuming
+ * app can retheme the library by overriding one tier.
+ *
+ * Stencil injects this file globally, so these definitions reach every component. The
+ * components are `scoped`, not `shadow`, so a host application's own CSS reaches them too.
+ *
+ * The light palette is a warm one — cream paper, espresso ink, caramel accent. The dark
+ * counterpart is carbon black through dark grey, and it is a full second set rather than a
+ * filter over the first: its surfaces carry their own faint warm tint, and its shadows are
+ * mixed from black rather than from the espresso brown, because a brown shadow on a dark
+ * surface is invisible and elevation has to come from a lighter surface instead.
+ *
+ * Only the semantic tier is redefined. Components read semantic and component tokens and
+ * never primitives, so the theme swaps underneath them and no component has a mode branch
+ * of its own. That is what the tier separation was for.
+ */
+
+:root {
+  /* Primitive — cream paper through espresso ink */
+  --rp-cream-0: #ffffff;
+  --rp-cream-50: #fdfbf7;
+  --rp-cream-100: #f9f6f0;
+  --rp-cream-200: #f3ede3;
+  --rp-cream-300: #efe8de;
+  --rp-cream-400: #e8dfd3;
+
+  --rp-taupe-400: #a8a29e;
+  --rp-taupe-500: #78716c;
+  --rp-taupe-600: #57534e;
+  --rp-taupe-700: #44403c;
+
+  --rp-espresso-700: #4a2e2b;
+  --rp-espresso-800: #3e2723;
+  --rp-espresso-900: #2c1810;
+  --rp-ink: #1c1917;
+
+  --rp-caramel-100: #f7e9dd;
+  --rp-caramel-300: #e2b894;
+  --rp-caramel-500: #c87d55;
+  --rp-caramel-600: #b45309;
+  --rp-clay-500: #8d5b4c;
+
+  --rp-sage-100: #e6ece3;
+  --rp-sage-600: #5c7052;
+
+  --rp-rust-100: #fbe7e3;
+  --rp-rust-600: #b4453a;
+
+  --rp-gold-500: #d99a2b;
+
+  /* The favorite heart reads as a heart only in red. The rust above is the palette's
+     warm error tone and is deliberately muted, which is wrong for an affirmative
+     action, so the heart gets its own vivid pair. */
+  --rp-red-500: #ef4444;
+  --rp-red-600: #dc2626;
+
+  /**
+   * Primitive — carbon black through dark grey, for the dark theme.
+   *
+   * Not pure black and not pure grey. Each step carries a trace of the same warmth as the
+   * cream scale, which is what keeps the two themes recognisably one product rather than
+   * a warm app and a cold one wearing the same layout.
+   */
+  --rp-carbon-950: #121212;
+  --rp-carbon-900: #171717;
+  --rp-carbon-850: #1c1c1c;
+  --rp-carbon-800: #212121;
+  --rp-carbon-750: #262626;
+  --rp-carbon-700: #2e2e2e;
+  --rp-carbon-600: #3a3a3a;
+  --rp-carbon-500: #4a4a4a;
+
+  --rp-grey-300: #d4d4d4;
+  --rp-grey-400: #a3a3a3;
+  --rp-grey-500: #8a8a8a;
+
+  /* Warmed for a dark ground: the light theme's caramel goes muddy against carbon. */
+  --rp-caramel-400: #d9926a;
+  --rp-caramel-200: #f0c4a4;
+
+  /* Semantic */
+  --rp-color-canvas: var(--rp-cream-50);
+  --rp-color-surface: var(--rp-cream-0);
+  --rp-color-surface-sunken: var(--rp-cream-100);
+  --rp-color-surface-raised: var(--rp-cream-0);
+  --rp-color-border: var(--rp-cream-300);
+  --rp-color-border-strong: var(--rp-cream-400);
+  --rp-color-text: var(--rp-ink);
+  --rp-color-text-body: var(--rp-taupe-700);
+  --rp-color-text-muted: var(--rp-taupe-500);
+  --rp-color-text-subtle: var(--rp-taupe-400);
+  --rp-color-accent: var(--rp-espresso-800);
+  --rp-color-accent-hover: var(--rp-espresso-900);
+  --rp-color-accent-contrast: var(--rp-cream-50);
+  --rp-color-highlight: var(--rp-caramel-500);
+  --rp-color-highlight-soft: var(--rp-caramel-100);
+  --rp-color-danger: var(--rp-rust-600);
+  --rp-color-danger-soft: var(--rp-rust-100);
+  --rp-color-success: var(--rp-sage-600);
+  --rp-color-success-soft: var(--rp-sage-100);
+  --rp-color-favorite: var(--rp-red-500);
+  --rp-color-favorite-strong: var(--rp-red-600);
+  --rp-color-focus: var(--rp-clay-500);
+
+  --rp-radius-sm: 8px;
+  --rp-radius-md: 12px;
+  --rp-radius-lg: 18px;
+  --rp-radius-xl: 24px;
+  --rp-radius-pill: 999px;
+
+  --rp-space-1: 4px;
+  --rp-space-2: 8px;
+  --rp-space-3: 12px;
+  --rp-space-4: 16px;
+  --rp-space-5: 24px;
+  --rp-space-6: 32px;
+  --rp-space-7: 48px;
+
+  /**
+   * Two families. The sans carries the interface; the serif is reserved for recipe titles
+   * and page headings, where the editorial voice belongs. Both fall back to a full native
+   * stack, so a page that never loads the webfont still sets in something appropriate
+   * rather than in Times.
+   */
+  --rp-font-sans:
+    'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --rp-font-serif: 'Fraunces', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+
+  --rp-font-size-xs: 0.75rem;
+  --rp-font-size-sm: 0.8125rem;
+  --rp-font-size-md: 0.9375rem;
+  --rp-font-size-lg: 1.0625rem;
+  --rp-font-size-xl: 1.25rem;
+
+  /**
+   * Shadows are mixed from the espresso brown, not from black. A neutral shadow over a
+   * cream surface reads as grey dirt; a brown one reads as depth.
+   */
+  --rp-shadow-xs: 0 1px 2px rgb(44 24 16 / 0.04);
+  --rp-shadow-sm: 0 2px 8px -2px rgb(44 24 16 / 0.06), 0 1px 2px rgb(44 24 16 / 0.04);
+  --rp-shadow-md: 0 4px 20px -4px rgb(44 24 16 / 0.08), 0 2px 6px -2px rgb(44 24 16 / 0.04);
+  --rp-shadow-lg: 0 12px 32px -8px rgb(44 24 16 / 0.14), 0 4px 12px -4px rgb(44 24 16 / 0.06);
+  --rp-shadow-xl: 0 24px 60px -12px rgb(44 24 16 / 0.22);
+
+  /* One curve for everything, so unrelated interactions still feel like one system. */
+  --rp-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --rp-duration-fast: 150ms;
+  --rp-duration: 250ms;
+  --rp-duration-slow: 400ms;
+
+  --rp-focus-ring: 2px solid var(--rp-color-focus);
+  --rp-focus-offset: 2px;
+  --rp-focus-halo: 0 0 0 4px rgb(141 91 76 / 0.15);
+}
+
+/**
+ * Dark theme.
+ *
+ * Driven by `data-theme="dark"` on the root element rather than by
+ * `prefers-color-scheme`, because the application offers an explicit switch: a user who
+ * chose light must keep light on a device set to dark. The consuming app is responsible
+ * for setting the attribute and for remembering the choice.
+ *
+ * Three things deliberately do not invert:
+ *
+ *   - the favorite heart, which reads as a heart only in red;
+ *   - the success/veg green, which is the affirmative signal in both themes;
+ *   - the danger red.
+ *
+ * All three are meanings rather than decoration. They are re-picked for contrast against a
+ * dark ground, not re-hued.
+ */
+:root[data-theme='dark'] {
+  --rp-color-canvas: var(--rp-carbon-950);
+  --rp-color-surface: var(--rp-carbon-850);
+  --rp-color-surface-sunken: var(--rp-carbon-800);
+  --rp-color-surface-raised: var(--rp-carbon-750);
+  --rp-color-border: var(--rp-carbon-700);
+  --rp-color-border-strong: var(--rp-carbon-600);
+
+  /* White for headings, a light grey for body — the same two-step relationship the light
+     theme has between ink and body text, so hierarchy survives the swap. */
+  --rp-color-text: #ffffff;
+  --rp-color-text-body: var(--rp-grey-300);
+  --rp-color-text-muted: var(--rp-grey-400);
+  --rp-color-text-subtle: var(--rp-grey-500);
+
+  /**
+   * The accent inverts its role. In the light theme it is dark espresso on cream; here a
+   * dark button on a dark ground would vanish, so the accent becomes the light surface and
+   * its contrast colour becomes the carbon underneath.
+   */
+  --rp-color-accent: var(--rp-caramel-400);
+  --rp-color-accent-hover: var(--rp-caramel-200);
+  --rp-color-accent-contrast: var(--rp-carbon-950);
+
+  --rp-color-highlight: var(--rp-caramel-400);
+  --rp-color-highlight-soft: rgb(217 146 106 / 0.16);
+
+  --rp-color-danger: #f87171;
+  --rp-color-danger-soft: rgb(248 113 113 / 0.14);
+  --rp-color-success: #6ec46f;
+  --rp-color-success-soft: rgb(110 196 111 / 0.14);
+
+  /* Unchanged in meaning, brightened for the ground it now sits on. */
+  --rp-color-favorite: var(--rp-red-500);
+  --rp-color-favorite-strong: #f87171;
+
+  --rp-color-focus: var(--rp-caramel-300);
+
+  /**
+   * Mixed from black, not from the espresso brown. A brown shadow over carbon is invisible,
+   * so depth in this theme comes mostly from the surface steps above; the shadows are kept
+   * to hold edges rather than to lift.
+   */
+  --rp-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --rp-shadow-sm: 0 2px 8px -2px rgb(0 0 0 / 0.5), 0 1px 2px rgb(0 0 0 / 0.4);
+  --rp-shadow-md: 0 4px 20px -4px rgb(0 0 0 / 0.55), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+  --rp-shadow-lg: 0 12px 32px -8px rgb(0 0 0 / 0.6), 0 4px 12px -4px rgb(0 0 0 / 0.45);
+  --rp-shadow-xl: 0 24px 60px -12px rgb(0 0 0 / 0.7);
+
+  --rp-focus-halo: 0 0 0 4px rgb(226 184 148 / 0.2);
+
+  /* Component tier. These are the few places a light-theme literal had been baked in
+     because there was only ever one theme to serve. */
+  --rp-card-favorite-bg: rgb(28 28 28 / 0.72);
+  --rp-card-favorite-border: rgb(255 255 255 / 0.14);
+  --rp-card-favorite-stroke: #f0f0f0;
+  --rp-card-fallback-sheen: rgb(255 255 255 / 0.05);
+  --rp-card-fallback-from: var(--rp-carbon-700);
+  --rp-card-fallback-to: var(--rp-carbon-850);
+  --rp-modal-backdrop: rgb(0 0 0 / 0.68);
+}
+
+/**
+ * Pre-hydration sizing. Custom elements are empty until their definition loads, so
+ * without reserved height the page reflows as each one upgrades. `:not(:defined)`
+ * matches only during that window.
+ *
+ * The placeholders shimmer rather than sitting flat, so the gap before upgrade reads as
+ * loading rather than as breakage.
+ */
+rp-recipe-card:not(:defined) {
+  display: block;
+  min-height: 340px;
+  border-radius: var(--rp-radius-lg);
+  background: var(--rp-color-surface-sunken);
+  border: 1px solid var(--rp-color-border);
+}
+
+rp-search-bar:not(:defined) {
+  display: block;
+  min-height: 52px;
+}
+
+rp-filter-chips:not(:defined) {
+  display: block;
+  min-height: 36px;
+}
+
+rp-filter-menu:not(:defined) {
+  display: inline-block;
+  min-width: 130px;
+  min-height: 36px;
+  border-radius: var(--rp-radius-pill);
+  background: var(--rp-color-surface-sunken);
+}
+
+rp-select:not(:defined) {
+  display: block;
+  min-height: 44px;
+  border-radius: var(--rp-radius-md);
+  background: var(--rp-color-surface-sunken);
+}
+
+rp-day-slot:not(:defined) {
+  display: block;
+  min-height: 200px;
+  border-radius: var(--rp-radius-lg);
+  background: var(--rp-color-surface-sunken);
+  border: 1px solid var(--rp-color-border);
+}
+
+rp-ingredient-list:not(:defined) {
+  display: block;
+}
+
+/**
+ * `display: none` rather than `visibility: hidden`. Before it upgrades, a modal's slotted
+ * children are ordinary elements in the consumer's markup; leaving the host in the flow
+ * reserves space for a dialog that is not being shown, and any child that escapes the
+ * host's own visibility — a fixed-position one, say — would paint on the page.
+ */
+rp-modal:not(:defined) {
+  display: none;
+}
+
+/**
+ * The copy of a planned meal that follows a finger while it is being dragged.
+ *
+ * It lives on `document.body` rather than inside the component, because a card clipped by
+ * its column's `overflow: hidden` could not follow the pointer across the grid. Declared
+ * globally for the same reason — a scoped component's styles do not reach it there.
+ *
+ * A desktop drag hands the browser a snapshot of the element and gets this for free. A
+ * touch drag has to build it, so the component clones the card into this wrapper: the
+ * wrapper positions and lifts it, while the clone keeps the card's own appearance. The two
+ * platforms then drag the same-looking thing.
+ */
+/**
+ * Matched to the native drag image a desktop browser produces: a translucent copy of the
+ * element, with no added border or shadow. The platform's own convention for "this is the
+ * thing you picked up" is the one to follow, and following it is also what stops the two
+ * platforms looking like different features.
+ */
+.rp-drag-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  font-family: var(--rp-font-sans);
+  pointer-events: none;
+  /* Lifted clear of the fingertip so the card underneath stays visible. */
+  margin: -44px 0 0 -12px;
+  opacity: 0.75;
+}
+
+/* The clone brings the card's own background, border, and padding — unaltered, so the
+   copy is the card rather than a highlighted version of it. */
+.rp-drag-ghost > .meal {
+  margin: 0;
+  /* The copy is an `<li>` that no longer has a `<ul>` around it, so it would otherwise
+     regain the list marker its parent's `list-style: none` was suppressing. */
+  list-style: none;
+}
+
+/* No element to clone — the title alone, styled as the label this used to be. */
+.rp-drag-ghost:not(:has(> .meal)) {
+  max-width: 200px;
+  padding: var(--rp-space-2) var(--rp-space-3);
+  overflow: hidden;
+  font-size: var(--rp-font-size-sm);
+  font-weight: 600;
+  color: var(--rp-color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-highlight);
+}
+
+/* The sweep is a lightening one on cream and stays a lightening one on carbon — only
+   much fainter, because the same opacity that reads as a sheen on cream reads as a
+   white bar on black. */
+:root {
+  --rp-shimmer-sheen: rgb(255 255 255 / 0.65);
+}
+
+:root[data-theme='dark'] {
+  --rp-shimmer-sheen: rgb(255 255 255 / 0.06);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  rp-recipe-card:not(:defined),
+  rp-day-slot:not(:defined) {
+    background-image: linear-gradient(
+      100deg,
+      transparent 20%,
+      var(--rp-shimmer-sheen) 50%,
+      transparent 80%
+    );
+    background-size: 220% 100%;
+    animation: rp-shimmer 1.6s var(--rp-ease) infinite;
+  }
+
+  @keyframes rp-shimmer {
+    from {
+      background-position: 180% 0;
+    }
+    to {
+      background-position: -80% 0;
+    }
+  }
+}

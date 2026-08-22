@@ -1,0 +1,187 @@
+:host {
+  display: block;
+  font-family: var(--rp-font-sans);
+}
+
+/**
+ * The border and focus halo live on the wrapper rather than on the input, so the search
+ * button can sit inside the same rounded shell and the whole control lights up as one
+ * object on focus.
+ */
+.bar {
+  display: flex;
+  gap: var(--rp-space-2);
+  align-items: center;
+  padding: 5px 5px 5px var(--rp-space-4);
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-pill);
+  box-shadow: var(--rp-shadow-sm);
+  transition:
+    border-color var(--rp-duration) var(--rp-ease),
+    box-shadow var(--rp-duration) var(--rp-ease);
+}
+
+.bar:hover {
+  border-color: var(--rp-color-border-strong);
+}
+
+.bar:focus-within {
+  border-color: var(--rp-color-focus);
+  box-shadow: var(--rp-shadow-sm), var(--rp-focus-halo);
+}
+
+.icon {
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--rp-color-text-subtle);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke var(--rp-duration) var(--rp-ease);
+}
+
+.bar:focus-within .icon {
+  stroke: var(--rp-color-focus);
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+  padding: var(--rp-space-2) 0;
+  font: inherit;
+  font-size: var(--rp-font-size-md);
+  color: var(--rp-color-text);
+  background: none;
+  border: none;
+}
+
+.field::placeholder {
+  color: var(--rp-color-text-subtle);
+}
+
+/* Both states, so a keyboard focus does not reinstate the outline the wrapper replaces. */
+.field:focus,
+.field:focus-visible {
+  outline: none;
+}
+
+/* The native clear affordance would sit beside our own button. */
+.field::-webkit-search-cancel-button {
+  display: none;
+}
+
+.clear {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--rp-color-text-subtle);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  transition:
+    color var(--rp-duration-fast) var(--rp-ease),
+    background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+.clear svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.clear:hover {
+  color: var(--rp-color-text);
+  background: var(--rp-color-surface-sunken);
+}
+
+.submit {
+  flex-shrink: 0;
+  padding: var(--rp-space-2) var(--rp-space-5);
+  font: inherit;
+  font-size: var(--rp-font-size-md);
+  font-weight: 600;
+  color: var(--rp-color-accent-contrast);
+  cursor: pointer;
+  background: var(--rp-color-accent);
+  border: none;
+  border-radius: var(--rp-radius-pill);
+  transition:
+    background-color var(--rp-duration-fast) var(--rp-ease),
+    transform var(--rp-duration-fast) var(--rp-ease);
+}
+
+.submit:hover {
+  background: var(--rp-color-accent-hover);
+}
+
+.submit:active {
+  transform: scale(0.97);
+}
+
+.submit-icon {
+  display: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+/**
+ * The input is deliberately absent here.
+ *
+ * Focusing it already lights the whole bar — `.bar:focus-within` draws the border and the
+ * halo — so an outline on the field as well drew a second, smaller box *inside* the first.
+ * One focus indicator per control: the wrapper is that indicator, which is the point of
+ * putting the border there rather than on the input.
+ */
+.submit:focus-visible,
+.clear:focus-visible {
+  outline: var(--rp-focus-ring);
+  outline-offset: var(--rp-focus-offset);
+}
+
+/**
+ * On a phone the field had roughly 184px, which cut the placeholder off mid-word. The
+ * button's label is replaced by its icon, which returns about 60px to the field — enough
+ * for the whole hint. The accessible name is restated on the button, since the visible
+ * text is what a screen reader would otherwise have used.
+ */
+@media (max-width: 560px) {
+  .bar {
+    padding-inline-start: var(--rp-space-3);
+    gap: var(--rp-space-1);
+  }
+
+  .submit {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+  }
+
+  .submit-text {
+    display: none;
+  }
+
+  .submit-icon {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .icon,
+  .clear,
+  .submit {
+    transition: none;
+  }
+
+  .submit:active {
+    transform: none;
+  }
+}

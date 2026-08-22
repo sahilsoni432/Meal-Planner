@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recipe-planner-ui — component demo</title>
+
+    <script type="module" src="/build/recipe-planner-ui.esm.js"></script>
+    <script nomodule src="/build/recipe-planner-ui.js"></script>
+
+    <style>
+      body {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 24px 64px;
+        font-family: var(--rp-font-sans);
+        color: var(--rp-color-text-body);
+        background: var(--rp-color-canvas);
+        line-height: 1.6;
+      }
+
+      h1 {
+        font-family: var(--rp-font-serif);
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+        color: var(--rp-color-text);
+      }
+
+      section {
+        margin-block: 48px;
+      }
+
+      h2 {
+        padding-bottom: 8px;
+        font-size: var(--rp-font-size-xs);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--rp-color-text-subtle);
+        border-bottom: 1px solid var(--rp-color-border);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 24px;
+      }
+
+      .week {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+      }
+
+      .badge {
+        padding: 4px 10px;
+        font-size: var(--rp-font-size-xs);
+        font-weight: 600;
+        color: var(--rp-espresso-900);
+        background: rgb(255 255 255 / 0.9);
+        border-radius: var(--rp-radius-pill);
+      }
+
+      .link {
+        font-size: var(--rp-font-size-sm);
+        font-weight: 600;
+        color: var(--rp-color-accent);
+        text-decoration: none;
+      }
+
+      #log {
+        max-height: 200px;
+        padding: 16px;
+        overflow-y: auto;
+        font-family: ui-monospace, monospace;
+        font-size: var(--rp-font-size-sm);
+        color: var(--rp-color-text-muted);
+        background: var(--rp-color-surface);
+        border: 1px solid var(--rp-color-border);
+        border-radius: var(--rp-radius-lg);
+      }
+
+      #log p {
+        margin: 0 0 4px;
+      }
+
+      button.demo {
+        padding: 10px 20px;
+        font: inherit;
+        font-size: var(--rp-font-size-md);
+        font-weight: 600;
+        color: var(--rp-color-accent-contrast);
+        cursor: pointer;
+        background: var(--rp-color-accent);
+        border: none;
+        border-radius: var(--rp-radius-md);
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>recipe-planner-ui</h1>
+    <p>
+      Every component below runs in this plain HTML file with no framework present. Interact with
+      them and watch the event log at the bottom.
+    </p>
+
+    <section>
+      <h2>rp-search-bar &amp; rp-filter-chips</h2>
+      <rp-search-bar value="pasta"></rp-search-bar>
+      <br />
+      <rp-filter-chips id="chips" selected="Chicken"></rp-filter-chips>
+    </section>
+
+    <section>
+      <h2>rp-recipe-card — slots and the favorite event</h2>
+      <div class="grid">
+        <rp-recipe-card
+          recipe-id="api:52772"
+          recipe-title="Teriyaki Chicken Casserole"
+          category="Chicken"
+          area="Japanese"
+          minutes="45"
+          image="https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg"
+          href="#teriyaki"
+          favorite
+        >
+          <span class="badge" slot="">Popular</span>
+        </rp-recipe-card>
+
+        <rp-recipe-card
+          recipe-id="usr:demo01"
+          recipe-title="Weeknight Tomato Pasta"
+          category="Vegetarian"
+          area="Italian"
+        >
+          <span class="badge">Yours</span>
+          <a class="link" slot="actions" href="#">Edit</a>
+          <a class="link" slot="actions" href="#">Delete</a>
+        </rp-recipe-card>
+      </div>
+    </section>
+
+    <section>
+      <h2>rp-select — a styled dropdown, since a native one cannot be themed</h2>
+      <div style="max-width: 280px">
+        <rp-select id="portions" label="Portions" placeholder="How many?"></rp-select>
+      </div>
+    </section>
+
+    <section>
+      <h2>rp-ingredient-list — default and named slots</h2>
+      <rp-ingredient-list id="ingredients">
+        <h2 slot="heading">What you need</h2>
+        <span>Serves 4.</span>
+      </rp-ingredient-list>
+    </section>
+
+    <section>
+      <h2>rp-day-slot — drag between days, or move, add, and remove</h2>
+      <div class="week" id="week"></div>
+    </section>
+
+    <section>
+      <h2>rp-modal — focus trap, Escape to close</h2>
+      <button class="demo" id="open-modal">Open dialog</button>
+      <rp-modal id="modal" heading="Add a meal">
+        <p>Tab cycles inside this dialog. Escape closes it and returns focus to the button.</p>
+        <label>Recipe name <input type="text" placeholder="Type a name" /></label>
+        <button class="demo" slot="footer" id="modal-cancel">Cancel</button>
+        <button class="demo" slot="footer">Confirm</button>
+      </rp-modal>
+    </section>
+
+    <section>
+      <h2>Event log</h2>
+      <div id="log"></div>
+    </section>
+
+    <script type="module">
+      const log = document.getElementById('log');
+      const write = (name, detail) => {
+        const line = document.createElement('p');
+        line.textContent = `${name} ${detail === undefined ? '' : JSON.stringify(detail)}`;
+        log.prepend(line);
+      };
+
+      // Array and object values have no attribute form, so they are assigned as properties.
+      document.getElementById('chips').options = ['Chicken', 'Seafood', 'Dessert', 'Vegetarian'];
+
+      document.getElementById('portions').options = [
+        { value: '2', label: 'Serves 2' },
+        { value: '4', label: 'Serves 4' },
+        { value: '6', label: 'Serves 6' },
+        { value: '8', label: 'Serves 8' },
+      ];
+      document.addEventListener('rpSelectChange', (e) => write('rpSelectChange', e.detail));
+
+      document.getElementById('ingredients').items = [
+        { name: 'Soy sauce', measure: '3/4 cup' },
+        { name: 'Water', measure: '1/2 cup' },
+        { name: 'Brown sugar', measure: '1/4 cup' },
+        { name: 'Chicken breasts', measure: '2 large' },
+      ];
+
+      const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+      const labels = {
+        mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday',
+        fri: 'Friday', sat: 'Saturday', sun: 'Sunday',
+      };
+      const plan = {
+        mon: [{ id: 'api:52772', title: 'Teriyaki Chicken Casserole' }],
+        tue: [], wed: [{ id: 'usr:demo01', title: 'Weeknight Tomato Pasta' }],
+        thu: [], fri: [], sat: [], sun: [],
+      };
+
+      const week = document.getElementById('week');
+      for (const day of days) {
+        const slot = document.createElement('rp-day-slot');
+        slot.day = day;
+        slot.dayLabel = labels[day];
+        slot.days = days;
+        slot.dayLabels = labels;
+        slot.meals = plan[day];
+        week.append(slot);
+      }
+
+      const refreshWeek = () => {
+        for (const slot of week.children) {
+          // A new array reference is required; Stencil compares by reference, not contents.
+          slot.meals = [...plan[slot.day]];
+        }
+      };
+
+      document.addEventListener('rpSearch', (e) => write('rpSearch', e.detail));
+      document.addEventListener('rpClear', () => write('rpClear'));
+      document.addEventListener('rpFilterChange', (e) => {
+        write('rpFilterChange', e.detail);
+        document.getElementById('chips').selected = e.detail;
+      });
+
+      document.addEventListener('rpFavoriteToggle', (e) => {
+        write('rpFavoriteToggle', e.detail);
+        e.target.favorite = e.detail.favorite;
+      });
+
+      document.addEventListener('rpAddMeal', (e) => write('rpAddMeal', e.detail));
+
+      document.addEventListener('rpRemoveMeal', (e) => {
+        write('rpRemoveMeal', e.detail);
+        plan[e.detail.day] = plan[e.detail.day].filter((m) => m.id !== e.detail.id);
+        refreshWeek();
+      });
+
+      document.addEventListener('rpMoveMeal', (e) => {
+        write('rpMoveMeal', e.detail);
+        const { id, from, to } = e.detail;
+        const meal = plan[from].find((m) => m.id === id);
+        if (!meal) return;
+        plan[from] = plan[from].filter((m) => m.id !== id);
+        plan[to] = [...plan[to], meal];
+        refreshWeek();
+      });
+
+      const modal = document.getElementById('modal');
+      document.getElementById('open-modal').addEventListener('click', () => {
+        modal.open = true;
+      });
+      document.getElementById('modal-cancel').addEventListener('click', () => {
+        modal.open = false;
+      });
+      modal.addEventListener('rpClose', () => {
+        write('rpClose');
+        modal.open = false;
+      });
+    </script>
+  </body>
+</html>

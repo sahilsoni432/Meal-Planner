@@ -1,0 +1,83 @@
+:host {
+  display: block;
+  font-family: var(--rp-font-sans);
+  color: var(--rp-color-text);
+}
+
+.heading {
+  margin: 0 0 var(--rp-space-4);
+  font-family: var(--rp-font-serif);
+  font-size: var(--rp-font-size-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.list {
+  margin: 0;
+  padding: var(--rp-space-2);
+  list-style: none;
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: var(--rp-shadow-xs);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--rp-space-4);
+  padding: var(--rp-space-3);
+  font-size: var(--rp-font-size-md);
+  border-radius: var(--rp-radius-sm);
+  transition: background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+/**
+ * Zebra striping replaced by a hover highlight. On a shopping list the row you are
+ * reading is the one worth marking, and alternating bands over a cream surface add
+ * visual noise the palette is trying to avoid.
+ */
+.row:hover {
+  background: var(--rp-color-highlight-soft);
+}
+
+.name {
+  color: var(--rp-color-text-body);
+}
+
+.measure {
+  flex-shrink: 0;
+  font-size: var(--rp-font-size-sm);
+  font-weight: 600;
+  color: var(--rp-caramel-600);
+  font-variant-numeric: tabular-nums;
+}
+
+.empty {
+  margin: 0;
+  padding: var(--rp-space-5);
+  font-size: var(--rp-font-size-md);
+  color: var(--rp-color-text-muted);
+  text-align: center;
+  background: var(--rp-color-surface-sunken);
+  border: 1px dashed var(--rp-color-border-strong);
+  border-radius: var(--rp-radius-lg);
+}
+
+.note {
+  margin-top: var(--rp-space-3);
+  font-size: var(--rp-font-size-sm);
+  color: var(--rp-color-text-muted);
+  text-align: center;
+}
+
+.note:not(:has(*)) {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
+}

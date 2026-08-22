@@ -1,0 +1,341 @@
+:host {
+  display: block;
+  font-family: var(--rp-font-sans);
+  color: var(--rp-color-text);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: var(--rp-shadow-sm);
+  transition:
+    transform var(--rp-duration) var(--rp-ease),
+    box-shadow var(--rp-duration) var(--rp-ease),
+    border-color var(--rp-duration) var(--rp-ease);
+}
+
+/**
+ * The whole-card link.
+ *
+ * Stretched over the card rather than wrapping it, so the favorite button and the slotted
+ * action links stay outside the anchor — nesting them would be invalid HTML and would take
+ * them out of the tab order. Everything interactive is raised above this layer instead.
+ */
+.cover-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* `.actions` is in normal flow, so it needs a position for z-index to take effect at
+   all; the other two are already absolute. */
+.actions {
+  position: relative;
+}
+
+.favorite,
+.actions,
+.badges {
+  z-index: 2;
+}
+
+/* The link carries no text, so the focus ring has to be drawn on the card it covers. */
+.cover-link:focus-visible {
+  outline: var(--rp-focus-ring);
+  outline-offset: -2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Hover is delegated to the host so the lift also fires from the slotted footer links,
+   which sit outside .card's own hover region in some consumer layouts. */
+:host(:hover) .card {
+  border-color: var(--rp-color-border-strong);
+  box-shadow: var(--rp-shadow-lg);
+  transform: translateY(-4px);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--rp-color-surface-sunken);
+}
+
+.media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform var(--rp-duration-slow) var(--rp-ease),
+    opacity var(--rp-duration) var(--rp-ease);
+}
+
+:host(:hover) .media img {
+  transform: scale(1.04);
+}
+
+.media.is-loading img {
+  opacity: 0;
+}
+
+.media-fallback {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 30% 25%, var(--rp-card-fallback-sheen, rgb(255 255 255 / 0.55)), transparent 55%),
+    linear-gradient(
+      135deg,
+      var(--rp-card-fallback-from, var(--rp-caramel-100)),
+      var(--rp-card-fallback-to, var(--rp-cream-400))
+    );
+}
+
+/* A soft floor under the image keeps white badges legible over a pale photograph
+   without darkening the whole tile. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgb(44 24 16 / 0.18) 0%, transparent 34%);
+}
+
+.badges {
+  position: absolute;
+  inset-block-start: var(--rp-space-3);
+  inset-inline-start: var(--rp-space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rp-space-1);
+}
+
+.favorite {
+  position: absolute;
+  inset-block-start: var(--rp-space-3);
+  inset-inline-end: var(--rp-space-3);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  /* Component-tier hooks so the theme can re-pick the disc behind the heart. The heart
+     itself never changes — it is red in both themes — but a white disc on a dark card
+     is a hole punched in it. */
+  background: var(--rp-card-favorite-bg, rgb(255 255 255 / 0.82));
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--rp-card-favorite-border, rgb(255 255 255 / 0.6));
+  border-radius: 50%;
+  box-shadow: var(--rp-shadow-sm);
+  transition:
+    transform var(--rp-duration-fast) var(--rp-ease),
+    background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+.favorite:hover {
+  background: var(--rp-color-surface);
+  transform: scale(1.08);
+}
+
+.favorite:active {
+  transform: scale(0.94);
+}
+
+/* The *unfavorited* outline only. The filled state below is red in both themes. */
+.favorite svg {
+  fill: none;
+  stroke: var(--rp-card-favorite-stroke, var(--rp-espresso-800));
+  stroke-width: 1.9;
+  stroke-linejoin: round;
+  transition:
+    fill var(--rp-duration-fast) var(--rp-ease),
+    stroke var(--rp-duration-fast) var(--rp-ease);
+}
+
+/* The darker red on the stroke keeps the shape's edge legible against the fill, which
+   a single flat colour loses at this size. */
+:host([favorite]) .favorite svg {
+  fill: var(--rp-color-favorite);
+  stroke: var(--rp-color-favorite-strong);
+}
+
+:host([favorite]) .favorite:hover svg {
+  fill: var(--rp-color-favorite-strong);
+}
+
+.favorite:focus-visible {
+  outline: var(--rp-focus-ring);
+  outline-offset: var(--rp-focus-offset);
+}
+
+.body {
+  flex: 1;
+  padding: var(--rp-space-4) var(--rp-space-4) var(--rp-space-3);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--rp-font-serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--rp-color-text);
+
+  /* Two lines keeps every card in a row the same height regardless of title length. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rp-space-1);
+  margin-top: var(--rp-space-3);
+}
+
+.pill {
+  padding: 3px 10px;
+  font-size: var(--rp-font-size-xs);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--rp-color-text-muted);
+  background: var(--rp-color-surface-sunken);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-pill);
+  white-space: nowrap;
+}
+
+.pill-category {
+  color: var(--rp-caramel-600);
+  background: var(--rp-color-highlight-soft);
+  border-color: transparent;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rp-space-2);
+  align-items: center;
+  padding: 0 var(--rp-space-4) var(--rp-space-4);
+}
+
+/* Collapse the footer when the consumer supplies no actions, so empty cards keep
+   their proportions instead of leaving a stray gap. */
+.actions:not(:has(*)) {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .media.is-loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      rgb(255 255 255 / 0.7) 50%,
+      transparent 80%
+    );
+    background-size: 220% 100%;
+    animation: rp-card-shimmer 1.6s var(--rp-ease) infinite;
+  }
+
+  @keyframes rp-card-shimmer {
+    from {
+      background-position: 180% 0;
+    }
+    to {
+      background-position: -80% 0;
+    }
+  }
+
+  /* A short overshoot on press. Applied to the button rather than the icon so the
+     whole control reads as having been struck. */
+  .favorite.is-pulsing {
+    animation: rp-favorite-pop 400ms var(--rp-ease);
+  }
+
+  @keyframes rp-favorite-pop {
+    0% {
+      transform: scale(1);
+    }
+    35% {
+      transform: scale(0.86);
+    }
+    70% {
+      transform: scale(1.16);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /**
+   * The icon bounces harder than the button it sits in, which is what makes the toggle
+   * feel like the heart itself reacting rather than the button being pressed. Separate
+   * from the button's own animation so the two compose instead of one overriding the
+   * other's transform.
+   */
+  .favorite.is-pulsing svg {
+    animation: rp-heart-beat 400ms var(--rp-ease);
+    transform-origin: center;
+  }
+
+  @keyframes rp-heart-beat {
+    0% {
+      transform: scale(1);
+    }
+    30% {
+      transform: scale(0.7);
+    }
+    55% {
+      transform: scale(1.35);
+    }
+    75% {
+      transform: scale(0.94);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .media img,
+  .favorite {
+    transition: none;
+  }
+
+  :host(:hover) .card {
+    transform: none;
+  }
+
+  :host(:hover) .media img {
+    transform: none;
+  }
+
+  /* Without the shimmer there is nothing to signal loading, so the image simply appears. */
+  .media.is-loading img {
+    opacity: 1;
+  }
+}
