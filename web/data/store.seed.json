@@ -1,0 +1,32 @@
+{
+	"recipes": [
+		{
+			"id": "usr:seed0001",
+			"title": "Weeknight Tomato Pasta",
+			"category": "Vegetarian",
+			"area": "Italian",
+			"instructions": "Bring a large pan of salted water to the boil and cook the spaghetti until al dente.\nWhile it cooks, warm the olive oil in a wide pan over medium heat and soften the garlic for about a minute, until fragrant but not coloured.\nAdd the tomatoes, crushing them with the back of a spoon, and simmer for ten minutes until thickened.\nDrain the pasta, reserving a cup of the cooking water, and toss it through the sauce with a splash of that water to bring it together.\nTear over the basil, season, and serve with grated parmesan.",
+			"image": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=640&q=70",
+			"ingredients": [
+				{ "name": "Spaghetti", "measure": "400g" },
+				{ "name": "Tinned plum tomatoes", "measure": "2 x 400g" },
+				{ "name": "Garlic", "measure": "3 cloves, sliced" },
+				{ "name": "Olive oil", "measure": "3 tbsp" },
+				{ "name": "Basil", "measure": "1 large handful" },
+				{ "name": "Parmesan", "measure": "To serve" }
+			],
+			"source": "local",
+			"isVeg": true
+		}
+	],
+	"favorites": ["api:52772", "usr:seed0001"],
+	"plan": {
+		"mon": ["usr:seed0001"],
+		"tue": [],
+		"wed": ["api:52772"],
+		"thu": [],
+		"fri": [],
+		"sat": [],
+		"sun": []
+	}
+}
