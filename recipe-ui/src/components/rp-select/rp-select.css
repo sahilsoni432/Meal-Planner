@@ -1,0 +1,210 @@
+:host {
+  display: block;
+  font-family: var(--rp-font-sans);
+}
+
+.wrap {
+  position: relative;
+}
+
+.trigger {
+  display: flex;
+  gap: var(--rp-space-2);
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px var(--rp-space-4);
+  font-family: var(--rp-font-sans);
+  font-size: var(--rp-font-size-md);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--rp-color-text);
+  text-align: start;
+  cursor: pointer;
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-border-strong);
+  border-radius: var(--rp-radius-md);
+  transition:
+    border-color var(--rp-duration-fast) var(--rp-ease),
+    box-shadow var(--rp-duration-fast) var(--rp-ease);
+}
+
+.trigger:hover:not(:disabled) {
+  border-color: var(--rp-color-text-subtle);
+}
+
+.trigger:focus-visible,
+:host([open]) .trigger {
+  outline: none;
+  border-color: var(--rp-color-focus);
+  box-shadow: var(--rp-focus-halo);
+}
+
+.trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.trigger-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trigger-value.is-placeholder {
+  color: var(--rp-color-text-subtle);
+}
+
+.chevron {
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--rp-color-text-muted);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--rp-duration-fast) var(--rp-ease);
+}
+
+:host([open]) .chevron {
+  transform: rotate(180deg);
+}
+
+/**
+ * The list is an ordinary element, which is the whole point: a native `<select>` renders
+ * its panel through the operating system, so it cannot take the palette, the radius, or
+ * the typography — and on a phone it escapes whatever dialog contains it.
+ */
+.list {
+  position: absolute;
+  inset-block-start: calc(100% + var(--rp-space-1));
+  inset-inline: 0;
+  z-index: 40;
+  /**
+   * `--rp-select-max-height` is set by the component from the space actually left below
+   * the trigger, so a list near the bottom of the window shortens and scrolls instead of
+   * running off the screen. The 260px is the cap when there is plenty of room.
+   */
+  max-height: min(260px, var(--rp-select-max-height, 260px));
+  padding: var(--rp-space-1);
+  overflow-y: auto;
+  /* Claims the vertical gesture for the list, so a finger dragging over a long list
+     scrolls the options rather than whatever lies behind the dialog. */
+  touch-action: pan-y;
+  /* Stops a scroll that reaches either end from chaining outward and moving the page. */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: var(--rp-shadow-lg);
+}
+
+/* Opens upward when there is more room above than below. */
+:host([drop-up]) .list {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + var(--rp-space-1));
+}
+
+.option {
+  display: flex;
+  gap: var(--rp-space-2);
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 9px var(--rp-space-3);
+  font-family: var(--rp-font-sans);
+  font-size: var(--rp-font-size-md);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--rp-color-text-body);
+  text-align: start;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--rp-radius-sm);
+  transition:
+    color var(--rp-duration-fast) var(--rp-ease),
+    background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+.option-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.option svg {
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--rp-color-highlight);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* One highlight for both hover and arrow-key focus, so the two cannot disagree about
+   which row is current. The warm tint replaces the operating system's blue bar. */
+.option.is-active {
+  color: var(--rp-color-text);
+  background: var(--rp-color-surface-sunken);
+}
+
+.option.is-selected {
+  font-weight: 600;
+  color: var(--rp-color-text);
+}
+
+.empty {
+  margin: 0;
+  padding: var(--rp-space-4) var(--rp-space-3);
+  font-size: var(--rp-font-size-sm);
+  font-weight: 500;
+  color: var(--rp-color-text-subtle);
+  text-align: center;
+}
+
+/**
+ * Compact variant, for the planner's per-meal move control where a column is about 150px
+ * wide. The list keeps the full type size — it is an overlay and has room even when the
+ * trigger does not.
+ */
+:host([compact]) .trigger {
+  padding: 4px var(--rp-space-2);
+  font-size: var(--rp-font-size-xs);
+  color: var(--rp-color-text-muted);
+  border-color: var(--rp-color-border);
+  border-radius: var(--rp-radius-sm);
+}
+
+:host([compact]) .list {
+  /* Wider than its trigger, so a day name is never truncated in the list itself. */
+  min-width: 148px;
+}
+
+:host([compact]) .option {
+  padding: 7px var(--rp-space-3);
+  font-size: var(--rp-font-size-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .list {
+    animation: rp-select-in var(--rp-duration-fast) var(--rp-ease);
+    transform-origin: top;
+  }
+
+  @keyframes rp-select-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.99);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .chevron,
+  .option {
+    transition: none;
+  }
+}

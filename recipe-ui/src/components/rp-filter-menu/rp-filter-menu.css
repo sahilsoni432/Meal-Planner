@@ -1,0 +1,289 @@
+:host {
+  display: inline-block;
+  font-family: var(--rp-font-sans);
+}
+
+.wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rp-space-1);
+}
+
+.trigger {
+  display: inline-flex;
+  gap: var(--rp-space-2);
+  align-items: center;
+  padding: 8px var(--rp-space-4);
+  font: inherit;
+  font-size: var(--rp-font-size-sm);
+  font-weight: 600;
+  color: var(--rp-color-text-body);
+  cursor: pointer;
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-pill);
+  transition:
+    color var(--rp-duration-fast) var(--rp-ease),
+    background-color var(--rp-duration-fast) var(--rp-ease),
+    border-color var(--rp-duration-fast) var(--rp-ease),
+    box-shadow var(--rp-duration-fast) var(--rp-ease);
+}
+
+.trigger:hover {
+  color: var(--rp-color-text);
+  border-color: var(--rp-color-border-strong);
+  box-shadow: var(--rp-shadow-sm);
+}
+
+/* An applied filter is the state worth seeing from across the page. */
+.trigger.is-active {
+  color: var(--rp-color-accent-contrast);
+  background: var(--rp-color-accent);
+  border-color: var(--rp-color-accent);
+  box-shadow: var(--rp-shadow-sm);
+}
+
+:host([open]) .trigger {
+  border-color: var(--rp-color-focus);
+  box-shadow: var(--rp-focus-halo);
+}
+
+.trigger-value {
+  max-width: 12ch;
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.trigger-value::before {
+  content: '· ';
+  opacity: 0.6;
+}
+
+.chevron {
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--rp-duration-fast) var(--rp-ease);
+}
+
+:host([open]) .chevron {
+  transform: rotate(180deg);
+}
+
+.clear {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--rp-color-text-subtle);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  transition:
+    color var(--rp-duration-fast) var(--rp-ease),
+    background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+.clear svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.clear:hover {
+  color: var(--rp-color-danger);
+  background: var(--rp-color-danger-soft);
+}
+
+.tray {
+  position: absolute;
+  inset-block-start: calc(100% + var(--rp-space-2));
+  inset-inline-start: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  width: max(240px, 100%);
+  max-height: 340px;
+  overflow: hidden;
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: var(--rp-shadow-lg);
+}
+
+.search {
+  display: flex;
+  gap: var(--rp-space-2);
+  align-items: center;
+  flex-shrink: 0;
+  padding: var(--rp-space-3);
+  border-bottom: 1px solid var(--rp-color-border);
+}
+
+.search-icon {
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--rp-color-text-subtle);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/**
+ * `font: inherit` resets weight and letter-spacing along with the family, so a control
+ * that only sets a size lands at 400 with default tracking. Every other control in this
+ * library sits at 500–600, and at 13px the difference is the whole reason the tray read
+ * as a plain system menu rather than part of the interface — so the weight is restated
+ * here rather than left to the shorthand.
+ */
+.search-field {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: var(--rp-font-size-sm);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--rp-color-text);
+  background: none;
+  border: none;
+}
+
+.search-field::placeholder {
+  font-weight: 500;
+  color: var(--rp-color-text-subtle);
+}
+
+.search-field:focus {
+  outline: none;
+}
+
+.options {
+  flex: 1;
+  padding: var(--rp-space-1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.option {
+  display: flex;
+  gap: var(--rp-space-2);
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 9px var(--rp-space-3);
+  font: inherit;
+  font-size: var(--rp-font-size-sm);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--rp-color-text-body);
+  text-align: start;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--rp-radius-sm);
+  transition:
+    color var(--rp-duration-fast) var(--rp-ease),
+    background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+.option svg {
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--rp-color-highlight);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.option-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* One highlight class for both hover and arrow-key focus, so the two cannot disagree
+   about which row is current. */
+.option.is-active {
+  color: var(--rp-color-text);
+  background: var(--rp-color-surface-sunken);
+}
+
+.option.is-selected {
+  font-weight: 600;
+  color: var(--rp-color-text);
+}
+
+.no-match {
+  margin: 0;
+  padding: var(--rp-space-5) var(--rp-space-3);
+  font-size: var(--rp-font-size-sm);
+  font-weight: 500;
+  color: var(--rp-color-text-subtle);
+  text-align: center;
+}
+
+.tray-foot {
+  flex-shrink: 0;
+  padding: var(--rp-space-2);
+  border-top: 1px solid var(--rp-color-border);
+}
+
+.reset {
+  width: 100%;
+  padding: 7px;
+  font: inherit;
+  font-size: var(--rp-font-size-sm);
+  font-weight: 600;
+  color: var(--rp-color-danger);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--rp-radius-sm);
+  transition: background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+.reset:hover {
+  background: var(--rp-color-danger-soft);
+}
+
+.trigger:focus-visible,
+.clear:focus-visible,
+.option:focus-visible,
+.reset:focus-visible,
+.search-field:focus-visible {
+  outline: var(--rp-focus-ring);
+  outline-offset: var(--rp-focus-offset);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tray {
+    animation: rp-tray-in var(--rp-duration-fast) var(--rp-ease);
+    transform-origin: top;
+  }
+
+  @keyframes rp-tray-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .chevron,
+  .clear,
+  .reset {
+    transition: none;
+  }
+}
