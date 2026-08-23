@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" data-theme="%theme%" style="color-scheme: %theme%">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="text-scale" content="scale" />
+			<!--
+			`%theme%` is replaced per request in `hooks.server.ts` from the theme cookie, so
+			the correct palette is in the very first byte of HTML. Resolving it in script
+			after hydration would paint light first and repaint dark, which is the flash
+			every dark mode has to answer for.
+		-->
+		<meta name="theme-color" content="%themeColor%" />
+
+		<!--
+			Preconnect before the stylesheet request, because the font files are served from a
+			second origin and the connection to it would otherwise not open until the CSS has
+			parsed. `display=swap` renders the fallback stack immediately rather than leaving
+			headings invisible while the webfont downloads.
+		-->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+		/>
+
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

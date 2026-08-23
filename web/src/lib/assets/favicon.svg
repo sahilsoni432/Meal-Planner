@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+	<title>Brownie Bites</title>
+	<rect width="32" height="32" rx="8" fill="#3e2723" />
+	<g fill="none" stroke="#fdfbf7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M9 7v6a2.6 2.6 0 0 0 5.2 0V7M11.6 13v12" />
+		<path d="M22 7c-1.5 2-2.2 4.2-2.2 6.4 0 1.9.9 3 2.2 3s2.2-1.1 2.2-3C24.2 11.2 23.5 9 22 7ZM22 16.4V25" />
+	</g>
+</svg>
