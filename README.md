@@ -214,8 +214,8 @@ renamed; it is not kept as a redirect. Any link to the old address has to be upd
 
 ## Architecture
 
-See **[ARCHITECTURE.md](ARCHITECTURE.md)** for the layer model, component contracts,
-data-flow walkthroughs, and the decision log.
+See **[ARCHITECTURE.md](ARCHITECTURE.md)** for the layer model, component contracts, and
+the data-flow walkthrough.
 
 The short version:
 

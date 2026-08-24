@@ -1,42 +1,35 @@
-# sv
+# web
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+The SvelteKit application. See the [project README](../README.md) for setup, deployment,
+and the assumptions behind the persistence model, and [ARCHITECTURE.md](../ARCHITECTURE.md)
+for how the pieces fit together.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
+## Running it
 
 ```sh
-# recreate this project
-npx sv@0.17.0 create --template minimal --types ts --add prettier sveltekit-adapter="adapter:vercel" --no-download-check --install npm web
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+The dev server starts at http://localhost:5173.
 
-To create a production version of your app:
+## Scripts
 
-```sh
-npm run build
-```
+| Script | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm run preview` | Serve the production build locally |
+| `npm run check` | Type-check the Svelte and TypeScript sources |
+| `npm run lint` | Prettier check |
+| `npm run format` | Prettier write |
 
-You can preview the production build with `npm run preview`.
+## Notes
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+The UI components come from `recipe-planner-ui`, installed from npm rather than imported
+from `recipe-ui/` across the repository. A change to the library is not visible here until
+it is published.
+
+Vercel is the deployment target. The Node adapter is selectable with `ADAPTER=node npm run
+build` for verifying a production build on Windows, where the Vercel adapter's symlink step
+needs Developer Mode or elevated rights.
