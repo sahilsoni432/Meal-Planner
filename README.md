@@ -2,7 +2,8 @@
 
 A recipe discovery and weekly meal planning application built with **Svelte 5**,
 **SvelteKit**, and a **StencilJS** component library that is published to npm and consumed
-from the registry.
+from the registry. Search thousands of recipes, save the ones you like, and plan a week of
+meals.
 
 | Deliverable | Link |
 |---|---|
