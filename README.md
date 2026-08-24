@@ -140,26 +140,22 @@ framework-agnostic.
 
 ## The published package
 
-The library is published as
-[**recipe-planner-ui**](https://www.npmjs.com/package/recipe-planner-ui).
+The component library is published to npm as
+[**recipe-planner-ui**](https://www.npmjs.com/package/recipe-planner-ui), currently at
+**v1.6.2**. It is framework-agnostic: the components are standard custom elements and need
+no Svelte, React, or build step to run.
 
-| Version | Type | Change |
-|---|---|---|
-| `1.0.0` | major | Initial release — six components |
-| `1.0.1` | patch | Fixed the `exports` map: `require()` of subpaths and of `package.json` |
-| `1.1.0` | minor | `rp-day-slot` gained an optional `dayLabels` prop |
-| `1.1.1` | patch | Normalized `aria-pressed` on the favorite button |
-| `1.2.0` | minor | Warm cream-and-espresso redesign; `rp-recipe-card` gained `area` and `minutes`; `rp-day-slot` gained drag-and-drop |
-| `1.3.0` | minor | New `rp-filter-menu` collapsible filter component; the favorite heart turned red |
-| `1.3.1` | patch | `rp-filter-menu` could fail to open when another menu was already open |
-| `1.4.0` | minor | `rp-recipe-card` gained `href`, making the whole card a link |
-| `1.5.0` | minor | New `rp-select`, a styled replacement for the unstylable native dropdown; `rp-day-slot` gained touch dragging |
-| `1.6.0` | minor | Dark theme as a semantic-token layer; `rp-day-slot` touch dragging fixed for physical phones |
-| `1.6.1` | patch | `rp-select` list could not be scrolled by touch; `rp-modal` now holds the page still beneath it |
-| `1.6.2` | patch | `rp-search-bar` drew a second focus outline inside its own focus ring |
+- **`rp-recipe-card`** — recipe summary tile with a favorite toggle and an `actions` slot
+- **`rp-search-bar`** — search input that emits on submit rather than on every keystroke
+- **`rp-filter-menu`** — collapsible filter tray with its own search field
+- **`rp-filter-chips`** — single-select chip row for a short list of options
+- **`rp-select`** — styled dropdown, a replacement for the unstylable native `<select>`
+- **`rp-ingredient-list`** — measure-and-name ingredient table
+- **`rp-day-slot`** — one day of the weekly plan, with drag-and-drop between days
+- **`rp-modal`** — dialog with a focus trap and Escape handling
 
-Versioning policy: **patch** for a fix with no API change, **minor** for a new component or
-optional prop, **major** for a renamed or removed tag, prop, event, or slot.
+Versioning follows semver: **patch** for a fix with no API change, **minor** for a new
+component or optional prop, **major** for a renamed or removed tag, prop, event, or slot.
 
 ### Verifying that the app consumes the published package
 
