@@ -1,0 +1,352 @@
+:host {
+  display: block;
+  font-family: var(--rp-font-sans);
+  color: var(--rp-color-text);
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 200px;
+  overflow: hidden;
+  background: var(--rp-color-surface);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: var(--rp-shadow-xs);
+  transition:
+    border-color var(--rp-duration) var(--rp-ease),
+    box-shadow var(--rp-duration) var(--rp-ease),
+    background-color var(--rp-duration) var(--rp-ease);
+}
+
+/* An empty day recedes, so the eye lands on the days that have something in them. */
+.slot.is-empty {
+  background: var(--rp-color-surface-sunken);
+  border-style: dashed;
+}
+
+.slot.is-drop-active {
+  background: var(--rp-color-highlight-soft);
+  border-style: solid;
+  border-color: var(--rp-color-highlight);
+  box-shadow: var(--rp-shadow-md), inset 0 0 0 1px var(--rp-color-highlight);
+}
+
+.head {
+  display: flex;
+  gap: var(--rp-space-1);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--rp-space-3) var(--rp-space-2) var(--rp-space-3) var(--rp-space-3);
+  border-bottom: 1px solid var(--rp-color-border);
+}
+
+/**
+ * `min-width: 0` and the ellipsis matter at narrow column widths: a long day name such as
+ * "Wednesday" plus the count badge exceeds the column, and a flex item defaults to its
+ * content width, which pushes the add button past the panel's clipped edge.
+ */
+.day {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--rp-font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--rp-color-text-muted);
+}
+
+.head-right {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--rp-space-2);
+  align-items: center;
+}
+
+.count {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--rp-caramel-600);
+  background: var(--rp-color-highlight-soft);
+  border-radius: var(--rp-radius-pill);
+}
+
+.add {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  cursor: pointer;
+  color: var(--rp-color-accent-contrast);
+  background: var(--rp-color-accent);
+  border: none;
+  border-radius: 50%;
+  transition:
+    transform var(--rp-duration-fast) var(--rp-ease),
+    background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+.add svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.add:hover {
+  background: var(--rp-color-highlight);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.add:active {
+  transform: rotate(90deg) scale(0.92);
+}
+
+.meals {
+  flex: 1;
+  margin: 0;
+  padding: var(--rp-space-2);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rp-space-2);
+}
+
+.meal {
+  position: relative;
+  padding: var(--rp-space-3) var(--rp-space-3) var(--rp-space-2);
+  cursor: grab;
+  /**
+   * The card claims the touch outright, and the component hands scrolling back in script
+   * for any gesture that turns out not to be a drag.
+   *
+   * This has to be static rather than set when a drag begins: a browser decides a touch's
+   * scrolling behaviour at `touchstart` and does not revisit it, so a `touch-action`
+   * applied once the long press completes arrives after the gesture is already committed
+   * to scrolling — the drag then never starts at all.
+   *
+   * `pan-y` was the previous value and was wrong for a second reason: it gave away the
+   * vertical axis, which on a phone is the only direction that reaches another day, since
+   * the week stacks into one column.
+   */
+  touch-action: none;
+  /* A long press would otherwise raise the platform's text-selection handles over the
+     card being dragged. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  background: var(--rp-color-surface-sunken);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius-md);
+  transition:
+    transform var(--rp-duration-fast) var(--rp-ease),
+    box-shadow var(--rp-duration-fast) var(--rp-ease),
+    opacity var(--rp-duration-fast) var(--rp-ease);
+}
+
+.meal:hover {
+  background: var(--rp-color-surface);
+  box-shadow: var(--rp-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.meal:active {
+  cursor: grabbing;
+}
+
+/* The original stays in place at low opacity while dragging, so the column does not
+   reflow under the pointer and the user keeps their bearings. */
+.meal.is-dragging {
+  opacity: 0.4;
+  box-shadow: none;
+  transform: none;
+}
+
+.grip {
+  position: absolute;
+  inset-block-start: var(--rp-space-2);
+  inset-inline-end: var(--rp-space-2);
+  display: block;
+  opacity: 0;
+  transition: opacity var(--rp-duration-fast) var(--rp-ease);
+}
+
+.grip svg {
+  display: block;
+  fill: var(--rp-color-text-subtle);
+}
+
+.meal:hover .grip {
+  opacity: 1;
+}
+
+.meal-title {
+  display: block;
+  padding-inline-end: var(--rp-space-4);
+  font-size: var(--rp-font-size-sm);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--rp-color-text);
+}
+
+.meal-actions {
+  display: flex;
+  gap: var(--rp-space-1);
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--rp-space-2);
+}
+
+.move-select {
+  min-width: 0;
+  /* The list overlays the cards below it, so this item has to outrank them. */
+  position: relative;
+  z-index: 1;
+  /* Opts back out of the card's `touch-action: none`, as `.remove` does — opening the
+     list is a tap, and must not wait on the drag machinery. */
+  touch-action: manipulation;
+}
+
+/**
+ * Widens the remove button's *hit* area to a comfortable finger target without changing
+ * the 24px box the layout is built around. A pseudo-element does this where padding
+ * would push the card's controls apart.
+ */
+.remove::before {
+  content: '';
+  position: absolute;
+  inset: -9px;
+}
+
+/**
+ * An open list must not be clipped by the meal card or the column, both of which round
+ * their corners with `overflow: hidden`. The rule is scoped to the moment a list is
+ * actually open, so the clipping that keeps the rounded corners intact stays in force
+ * the rest of the time.
+ */
+.meal:has(rp-select[open]),
+.meals:has(rp-select[open]) {
+  overflow: visible;
+}
+
+.slot:has(rp-select[open]) {
+  overflow: visible;
+}
+
+/* A card with its list open sits above its neighbours. */
+.meal:has(rp-select[open]) {
+  z-index: 3;
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  /**
+   * The controls opt back out of the card's `touch-action: none`.
+   *
+   * The card takes the whole gesture so it can be dragged vertically, but a tap on a
+   * button is not a drag and must not wait on the drag machinery to decide that.
+   * `manipulation` keeps the tap immediate while still suppressing double-tap zoom.
+   */
+  touch-action: manipulation;
+  /* Anchors the enlarged hit area below. */
+  position: relative;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--rp-color-text-subtle);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--rp-radius-sm);
+  transition:
+    color var(--rp-duration-fast) var(--rp-ease),
+    background-color var(--rp-duration-fast) var(--rp-ease);
+}
+
+.remove svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.remove:hover {
+  color: var(--rp-color-danger);
+  background: var(--rp-color-danger-soft);
+}
+
+.empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--rp-space-2);
+  align-items: center;
+  justify-content: center;
+  padding: var(--rp-space-4) var(--rp-space-3);
+  text-align: center;
+}
+
+.empty-icon {
+  fill: none;
+  stroke: var(--rp-color-text-subtle);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.empty-text {
+  margin: 0;
+  font-size: var(--rp-font-size-xs);
+  color: var(--rp-color-text-subtle);
+}
+
+.add:focus-visible,
+.remove:focus-visible,
+.move-select:focus-visible {
+  outline: var(--rp-focus-ring);
+  outline-offset: var(--rp-focus-offset);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot,
+  .meal,
+  .add,
+  .grip,
+  .remove,
+  .move-select {
+    transition: none;
+  }
+
+  .meal:hover,
+  .add:hover,
+  .add:active {
+    transform: none;
+  }
+
+  /* The grip is the only cue that a meal is draggable, so it stays visible when the
+     hover reveal is suppressed. */
+  .grip {
+    opacity: 1;
+  }
+}
