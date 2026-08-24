@@ -52,15 +52,15 @@ contrast against a dark ground rather than re-hued.
 
 The choice is stored in its own cookie and applied to `<html>` in `hooks.server.ts`, so the
 correct palette is in the first byte of HTML — there is no flash of the wrong theme on
-load. The reasoning is in [ARCHITECTURE.md](ARCHITECTURE.md#decision-log).
+load. The reasoning is in
+[ARCHITECTURE.md](ARCHITECTURE.md#4-state-and-persistence).
 
 Every animation is wrapped in `prefers-reduced-motion`, and the drag-and-drop in the
 planner is an enhancement over a `<select>` that remains the keyboard and touch path.
 
 **One caveat on Veg Only.** TheMealDB has no vegetarian field, so for API recipes the flag
 is derived from the category — which classifies the category, not the dish. Recipes you
-write yourself are asked directly and stored. The reasoning is in
-[ARCHITECTURE.md](ARCHITECTURE.md#veg-only-a-second-cookie-and-a-derived-flag).
+write yourself are asked directly and stored.
 
 ---
 
